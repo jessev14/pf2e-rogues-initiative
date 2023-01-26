@@ -1,0 +1,7 @@
+#pf2e-rogues-initiative .dialog-content {
+    flex: 0;
+}
+
+#pf2e-rogues-initiative .dialog-buttons {
+    flex-direction: column;
+}
