@@ -91,7 +91,10 @@ async function prepInit(wrapped) {
 
 function isRoguesInitiative(actor) {
     if (actor.itemTypes.condition.find(c => c.slug === 'hidden')) return true;
+    if (actor.itemTypes.condition.find(c => c.slug === 'invisible')) return true;
+    if (actor.itemTypes.condition.find(c => c.slug === 'undetected')) return true;    
     if (actor.itemTypes.effect.find(e => e.name === 'Avoid Notice')) return true;
+    if (actor.getActiveTokens().some(t => t.document.hidden)) return true;
 
     return false;
 }
