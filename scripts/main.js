@@ -21,13 +21,12 @@ async function prepInit(wrapped) {
     if (actor[moduleID]) {
         const { options, ogAbility } = actor[moduleID];
         actor[moduleID] = null;
-        const { combatant, roll } = await ogRoll(options) ?? {};
+        await ogRoll(options);
         await actor.update({ "system.attributes.initiative.ability": ogAbility });
-        return { combatant, roll };
     }
 
     stat.roll = async options => {
-        if (!this.isOfType('character')) return ogRoll.call(this, options);
+        if (!actor.isOfType('character')) return ogRoll.call(actor, options);
 
         const buttons = {
             normal: {
