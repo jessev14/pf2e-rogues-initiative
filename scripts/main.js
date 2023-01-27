@@ -44,6 +44,7 @@ async function prepInit(wrapped) {
         for (let i = 1; i < 4; i++) {
             const r = lastRolls.pop();
             if (!r) break;
+
             const label = r.flags.pf2e?.context?.domains?.includes('stealth')
                 ? 'Stealth Check'
                 : r.flags.pf2e?.context?.options.find(o => o === 'action:hide')
