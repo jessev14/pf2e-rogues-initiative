@@ -23,6 +23,7 @@ async function prepInit(wrapped) {
         actor[moduleID] = null;
         await ogRoll(options);
         await actor.update({ "system.attributes.initiative.ability": ogAbility });
+        return;
     }
 
     stat.roll = async options => {
