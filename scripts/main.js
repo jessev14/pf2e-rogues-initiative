@@ -9,11 +9,13 @@ Hooks.once('init', () => {
 });
 
 
-async function prepInit(wrapped) {    
+async function prepInit(wrapped) {
+    const actor = this;
+
+    if (actor[moduleID]) actor.system.attributes.initiative.ability = 'ste';
     wrapped();
 
-    const actor = this;
-    if (!this.isOfType('character')) return;
+    if (!actor.isOfType('character')) return;
     if (!isRoguesInitiative(actor)) return
 
     const stat = actor.system.attributes.initiative;
@@ -21,9 +23,10 @@ async function prepInit(wrapped) {
     if (actor[moduleID]) {
         const { options, ogAbility } = actor[moduleID];
         actor[moduleID] = null;
-        await ogRoll(options);
-        await actor.update({ "system.attributes.initiative.ability": ogAbility });
-        return;
+        const res = await ogRoll(options);
+        this.system.attributes.initiative.ability = ogAbility;
+        actor.prepareInitiative();
+        return res;
     }
 
     stat.roll = async options => {
@@ -83,7 +86,7 @@ async function prepInit(wrapped) {
         if (choice === 'stealth') {
             const ogAbility = stat.ability;
             actor[moduleID] = { options, ogAbility };
-            return actor.update({ "system.attributes.initiative.ability": 'ste' });
+            return actor.prepareInitiative();
         }
         
         return ogRoll.call(this, options);
